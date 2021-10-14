@@ -120,3 +120,9 @@ If you discover any security related issues, please email raditzfarhan@gmail.com
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+## References
+
+-   [2C2P Developer Zone](https://developer.2c2p.com/docs)
+-   [2C2P Recipes](https://developer.2c2p.com/recipes)
+-   [2C2P API Reference](https://developer.2c2p.com/reference)
