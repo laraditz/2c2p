@@ -14,6 +14,26 @@ You can install the package via composer:
 composer require laraditz/2c2p
 ```
 
+## Before Start
+
+Configure your variables in your `.env` (recommended) or you can publish the config file and change it there.
+```
+2C2P_MERCHANT_ID=<your_merchant_id_here>
+2C2P_MERCHANT_SECRET=<your_merchant_secret_key_here>
+2C2P_CURRENCY_CODE=<your_default_currency_code>
+2C2P_SANDBOX_MODE=true # true or false for sandbox mode
+```
+
+(Optional) You can publish the config file via this command:
+```bash
+php artisan vendor:publish --provider="Laraditz\Twoc2p\Twoc2pServiceProvider" --tag="config"
+```
+
+Run the migration command to create the necessary database table.
+```bash
+php artisan migrate
+```
+
 ## Available Methods
 
 Below are all methods available under this package.

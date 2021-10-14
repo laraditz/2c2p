@@ -24,7 +24,7 @@ class Twoc2pServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('2c2p.php'),
-            ], '2c2p-config');
+            ], 'config');
 
             // Publishing the views.
             /*$this->publishes([
