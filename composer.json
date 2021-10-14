@@ -1,0 +1,54 @@
+{
+    "name": "laraditz/2c2p",
+    "description": "Simple laravel package for 2C2P Payment Gateway",
+    "keywords": [
+        "laraditz",
+        "2c2p"
+    ],
+    "homepage": "https://github.com/laraditz/2c2p",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Raditz Farhan",
+            "email": "raditzfarhan@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0",
+        "firebase/php-jwt": "^5.4"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laraditz\\Twoc2p\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Laraditz\\Twoc2p\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laraditz\\Twoc2p\\Twoc2pServiceProvider"
+            ],
+            "aliases": {
+                "Twoc2p": "Laraditz\\Twoc2p\\Twoc2pFacade"
+            }
+        }
+    }
+}
