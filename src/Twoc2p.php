@@ -113,10 +113,10 @@ class Twoc2p
 
                 if (data_get($response->json(), 'payload')) {
                     $responsePayload = $response->json()['payload'];
+                    $responseObj = $this->decodeJWT($responsePayload);
 
-                    return $this->decodeJWT($responsePayload);
+                    return json_decode(json_encode($responseObj), true);
                 } else {
-
                     throw new LogicException(data_get($response->json(), 'respDesc') ?? 'Error.');
                 }
             }
