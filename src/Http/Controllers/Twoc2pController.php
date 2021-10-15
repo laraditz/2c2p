@@ -17,7 +17,7 @@ class Twoc2pController extends Controller
             try {
                 $decoded = app('Twoc2p')->decodeJWT($request->payload);
 
-                if ($decoded && is_array($decoded)) {
+                if ($decoded && data_get($decoded, 'invoiceNo')) {
                     event(new BackendReceived($decoded));
 
                     Twoc2pPayment::create([
