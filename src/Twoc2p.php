@@ -71,6 +71,7 @@ class Twoc2p
                         if ($response_code === '0000') {
                             return [
                                 'id' => $twoc2pPayment->id,
+                                'currency_code' => $twoc2pPayment->currency_code,
                                 'payment_url' => data_get($decoded, 'webPaymentUrl'),
                             ];
                         }
