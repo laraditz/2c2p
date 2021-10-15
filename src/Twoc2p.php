@@ -27,7 +27,7 @@ class Twoc2p
         $this->setBaseUrl();
     }
 
-    public function createPaymentarray(array $requestPayload = [])
+    public function createPayment(array $requestPayload = [])
     {
         $requestPayload = array_merge(
             [
