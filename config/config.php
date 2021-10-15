@@ -11,6 +11,7 @@ return [
     'routes' => [
         'prefix' => 'twoc2p',
         'paymentToken' => 'paymentToken',
+        'paymentInquiry' => 'paymentInquiry',
     ],
     'sandbox' => [
         'mode' => env('2C2P_SANDBOX_MODE', false),

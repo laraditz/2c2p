@@ -27,7 +27,7 @@ class Twoc2p
         $this->setBaseUrl();
     }
 
-    public function createPayment($requestPayload = [])
+    public function createPaymentarray(array $requestPayload = [])
     {
         $requestPayload = array_merge(
             [
@@ -60,7 +60,7 @@ class Twoc2p
                 if (data_get($response->json(), 'payload')) {
                     $responsePayload = $response->json()['payload'];
 
-                    $decoded = JWT::decode($responsePayload, $this->getMerchantSecret(), ['HS256']);
+                    $decoded = $this->decodeJWT($responsePayload);
 
                     $response_code = data_get($decoded, 'respCode');
 
@@ -86,6 +86,48 @@ class Twoc2p
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function paymentInquiry(string $payment_id)
+    {
+        $payment = Twoc2pPayment::findOrFail($payment_id);
+
+        $data = [
+            'paymentToken' => data_get($payment->response, 'paymentToken'),
+            'merchantID' => data_get($payment->request, 'merchantID'),
+            'invoiceNo' => data_get($payment->request, 'invoiceNo'),
+            'locale' => null,
+        ];
+
+        try {
+
+            $jwt = $this->encodeJWT($data);
+
+            $response = Http::acceptJson()->post($this->getUrl('paymentInquiry'), [
+                'payload' => $jwt,
+            ]);
+
+            $response->throw();
+
+            if ($response->successful()) {
+
+                if (data_get($response->json(), 'payload')) {
+                    $responsePayload = $response->json()['payload'];
+
+                    return $this->decodeJWT($responsePayload);
+                } else {
+
+                    throw new LogicException(data_get($response->json(), 'respDesc') ?? 'Error.');
+                }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function encodeJWT(array $content)
+    {
+        return JWT::encode($content, $this->getMerchantSecret());
     }
 
     public function decodeJWT(string $content)
