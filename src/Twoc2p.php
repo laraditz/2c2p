@@ -90,7 +90,6 @@ class Twoc2p
 
     public function decodeJWT(string $content)
     {
-        dd($content);
         return JWT::decode($content, $this->getMerchantSecret(), ['HS256']);
     }
 
