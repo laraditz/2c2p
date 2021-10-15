@@ -11,7 +11,7 @@ class Twoc2pController extends Controller
 {
     public function backend(Request $request)
     {
-        logger()->info('2C2P Backend : Received', $request->all());
+        // logger()->info('2C2P Backend : Received', $request->all());
 
         if ($request->payload) {
             try {
