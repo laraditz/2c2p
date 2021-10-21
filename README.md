@@ -41,6 +41,9 @@ Below are all methods available under this package.
 | Method name               | Description  
 |---------------------------|---------------------------------|
 | createPayment()           | Create a new payment and get payment URL.  
+| paymentInquiry()          | Inquire on payment details.  
+| encodeJWT()               | Encode content based on 2c2p rules.  
+| decodeJWT()               | Decode content based on 2c2p rules.  
 
 ## Usage
 
@@ -90,6 +93,18 @@ Redirect to the `payment_url` to proceed to 2C2P payment page. Once done, you wi
 	"respCode": "2000",
 	"respDesc": "Transaction is completed, please do payment inquiry request for full payment information."
 }
+```
+
+### Payment Inquiry
+To inquire on payment details.
+
+| Parameter                 |   Type    | Description  
+|---------------------------|:---------:|-----------------------|
+| payment_id                | string    | Payment ID from create payment.
+
+Example as below:
+```php
+app('Twoc2p')->paymentInquiry('94a11139-df90-438a-8705-8d88aaa9719e');
 ```
 
 ## Event
