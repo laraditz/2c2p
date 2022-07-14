@@ -27,7 +27,7 @@ class Twoc2p
         $this->setBaseUrl();
     }
 
-    public function createPayment($requestPayload = [])
+    public function createPayment(array $requestPayload = [])
     {
         $requestPayload = array_merge(
             [
@@ -60,7 +60,7 @@ class Twoc2p
                 if (data_get($response->json(), 'payload')) {
                     $responsePayload = $response->json()['payload'];
 
-                    $decoded = JWT::decode($responsePayload, $this->getMerchantSecret(), ['HS256']);
+                    $decoded = $this->decodeJWT($responsePayload);
 
                     $response_code = data_get($decoded, 'respCode');
 
@@ -71,6 +71,7 @@ class Twoc2p
                         if ($response_code === '0000') {
                             return [
                                 'id' => $twoc2pPayment->id,
+                                'currency_code' => $this->getCurrencyCode(),
                                 'payment_url' => data_get($decoded, 'webPaymentUrl'),
                             ];
                         }
@@ -87,9 +88,50 @@ class Twoc2p
         }
     }
 
+    public function paymentInquiry(string $payment_id)
+    {
+        $payment = Twoc2pPayment::findOrFail($payment_id);
+
+        $data = [
+            'paymentToken' => data_get($payment->response, 'paymentToken'),
+            'merchantID' => data_get($payment->request, 'merchantID'),
+            'invoiceNo' => data_get($payment->request, 'invoiceNo'),
+            'locale' => null,
+        ];
+
+        try {
+
+            $jwt = $this->encodeJWT($data);
+
+            $response = Http::acceptJson()->post($this->getUrl('paymentInquiry'), [
+                'payload' => $jwt,
+            ]);
+
+            $response->throw();
+
+            if ($response->successful()) {
+
+                if (data_get($response->json(), 'payload')) {
+                    $responsePayload = $response->json()['payload'];
+                    $responseObj = $this->decodeJWT($responsePayload);
+
+                    return json_decode(json_encode($responseObj), true);
+                } else {
+                    throw new LogicException(data_get($response->json(), 'respDesc') ?? 'Error.');
+                }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function encodeJWT(array $content)
+    {
+        return JWT::encode($content, $this->getMerchantSecret());
+    }
+
     public function decodeJWT(string $content)
     {
-        dd($content);
         return JWT::decode($content, $this->getMerchantSecret(), ['HS256']);
     }
 
